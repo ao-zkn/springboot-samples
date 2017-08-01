@@ -1,0 +1,44 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.4.RELEASE'
+        gradleGitPropertiesVersion = '1.4.17'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+        url("https://plugins.gradle.org/m2/")
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:${gradleGitPropertiesVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: "com.gorylenko.gradle-git-properties"
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compileOnly('org.projectlombok:lombok')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+gitProperties {
+    dateFormat = "yyyy-MM-dd'T'HH:mmZ"
+    dateFormatTimeZone = "JST"
+    gitRepositoryRoot = new File("${project.rootDir}/..")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.5.1'
+}
